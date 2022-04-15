@@ -40,8 +40,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   guessesAllowed: 3,
   theWord: 'cat',
-  wordLength: 3,
   currentRowIndex: 0,
+  state: 'active',
+  message: '',
 
   get currentGuess() {
     return this.currentRow.map(function (tile) {
@@ -56,13 +57,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       length: this.guessesAllowed
     }, function () {
       return Array.from({
-        length: _this.wordLength
+        length: _this.theWord.length
       }, function () {
         return new _tile__WEBPACK_IMPORTED_MODULE_0__["default"]();
       });
     });
   },
   onKeyPress: function onKeyPress(key) {
+    this.message = '';
+
     if (/^[A-z]$/.test(key)) {
       this.fillTile(key);
     } else if (key === 'Enter') {
@@ -91,16 +94,33 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   submitGuess: function submitGuess() {
     var guess = this.currentGuess;
 
-    if (guess.length < this.wordLength) {
+    if (guess.length < this.theWord.length) {
       return;
-    }
+    } //update tile colour
+
+
+    this.refreshTileStatusForCurrentRow();
 
     if (guess === this.theWord) {
-      alert('You Win!');
+      this.message = 'You Win!';
+    } else if (this.guessesAllowed === this.currentRowIndex + 1) {
+      this.message = 'GAME OVER!';
+      this.state = 'complete';
     } else {
-      alert('that\'s not it!');
+      this.message = 'that\'s not it!';
       this.currentRowIndex++;
     }
+  },
+  refreshTileStatusForCurrentRow: function refreshTileStatusForCurrentRow() {
+    var _this2 = this;
+
+    this.currentRow.forEach(function (tile, index) {
+      tile.status = _this2.theWord.includes(tile.letter) ? 'present' : 'absent';
+
+      if (_this2.currentGuess[index] === _this2.theWord[index]) {
+        tile.status = 'correct';
+      }
+    });
   },
 
   get currentRow() {

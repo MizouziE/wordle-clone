@@ -3,8 +3,9 @@ import Tile from "./tile";
 export default {
         guessesAllowed: 3,
         theWord: 'cat',
-        wordLength: 3,
         currentRowIndex: 0,
+        state: 'active',
+        message: '',
 
         get currentGuess() {
             return this.currentRow.map(tile => tile.letter).join('');
@@ -12,11 +13,13 @@ export default {
 
         init() {
             this.board = Array.from({ length: this.guessesAllowed }, () => {
-                return Array.from({ length: this.wordLength }, () => new Tile)
+                return Array.from({ length: this.theWord.length }, () => new Tile)
             });
         },
 
         onKeyPress(key) {
+            this.message = '';
+
             if (/^[A-z]$/.test(key)) {
                 this.fillTile(key);
             } else if (key === 'Enter') {
@@ -39,17 +42,33 @@ export default {
         submitGuess() {
             let guess = this.currentGuess;
 
-            if (guess.length < this.wordLength) {
+            if (guess.length < this.theWord.length) {
                 return;
             }
 
-            if (guess === this.theWord) {
-                alert('You Win!');
-            } else {
-                alert('that\'s not it!');
+            //update tile colour
+            this.refreshTileStatusForCurrentRow();
 
+            if (guess === this.theWord) {
+                this.message = 'You Win!';
+            } else if (this.guessesAllowed === this.currentRowIndex + 1) {
+                this.message = 'GAME OVER!';
+                this.state = 'complete';
+            } else {
+                this.message = 'that\'s not it!';
                 this.currentRowIndex++;
             }
+
+        },
+
+        refreshTileStatusForCurrentRow() {
+            this.currentRow.forEach((tile, index) => {
+                tile.status = this.theWord.includes(tile.letter) ? 'present' : 'absent';
+
+                if (this.currentGuess[index] === this.theWord[index]) {
+                    tile.status = 'correct';
+                }
+            });
         },
 
         get currentRow() {

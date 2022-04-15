@@ -12,21 +12,20 @@
 </head>
 
 <body>
+    <main x-data="game" @keyup.window="onKeyPress($event.key)">
+        <div id="game">
+            <template x-for="row in board">
+                <div class="row">
+                    <template x-for="tile in row">
+                        <div class="tile" :class="tile.status" x-text="tile.letter"></div>
+                    </template>
+                </div>
+            </template>
 
-    <div
-        id="game"
-        x-data="game"
-        @keyup.window="onKeyPress($event.key)"
-        >
-        <template x-for="row in board">
-            <div class="row">
-                <template x-for="tile in row" >
-                    <div class="tile" x-text="tile.letter"></div>
-                </template>
-            </div>
-        </template>
+        </div>
 
-    </div>
+        <output x-text="message"></output>
+    </main>
 
 </body>
 

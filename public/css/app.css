@@ -10,6 +10,16 @@ body {
     font-family: sans-serif;
 }
 
+output {
+    font-size: 1.3rem;
+    text-align: center;
+    display: block;
+    margin-top: 1.5rem;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+}
+
 #game {
 
 }
@@ -26,5 +36,16 @@ body {
     justify-content: center;
     outline: 1px solid aliceblue;
     font-size: 2rem;
+}
+
+.tile.absent {
+    background: grey;
+}
+.tile.present {
+    background: rgba(209, 209, 4, 0.941);
+}
+
+.tile.correct {
+    background: rgb(27, 213, 2);
 }
 
