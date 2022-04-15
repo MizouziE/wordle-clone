@@ -5,47 +5,100 @@ html, body {
 body {
     display: grid;
     place-items: center;
-    background-color: rgb(32, 32, 32);
+    background-color: #0e1626;
     color: aliceblue;
-    font-family: sans-serif;
+    margin: 0;
+    font-family: Poppins, sans-serif;
 }
 
-output {
-    font-size: 1.3rem;
+h1 {
     text-align: center;
-    display: block;
-    margin-top: 1.5rem;
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
 }
 
 #game {
+    color: aliceblue;
+    background-image: linear-gradient(153deg, #1c2b45 13%, #0c1321 85%), linear-gradient(149deg, #fec63b 3%, rgba(254, 198, 59, 0) 80%);
+    position: relative;
+    border-radius: 20px;
+}
 
+#game:before {
+    content: '';
+    display: block;
+    position: absolute;
+    inset: -7px;
+    background-image: linear-gradient(138deg, #6ba0e2 -20%, #131e32 105%);
+    z-index: -1;
+    border-radius: 25px;
+}
+
+output {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    display: block;
+    margin-top: 1rem;
+    position: fixed;
+    inset: auto 0 3rem 0;
 }
 
 .row {
     display: flex;
 }
 
+.row.current .tile:empty:first-of-type {
+    -webkit-animation: fade 2s;
+            animation: fade 2s;
+    -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+    -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes fade {
+    50% {
+        background: rgba(255, 255, 255, .05);
+    }
+}
+
+@keyframes fade {
+    50% {
+        background: rgba(255, 255, 255, .05);
+    }
+}
+
 .tile {
+    outline: 1px solid rgba(78, 110, 158, 0.1);
     width: 100px;
     height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
-    outline: 1px solid aliceblue;
-    font-size: 2rem;
+    font-size: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: aliceblue;
+}
+
+.row.invalid .tile, .tile.invalid {
+    color: #ff3f3f;
+    text-shadow: 0 0 12px rgba(246, 38, 38, 0.42);
 }
 
 .tile.absent {
-    background: grey;
+    color: grey;
+    text-shadow: 0 0 12px rgba(93, 92, 92, 0.419);
 }
+
 .tile.present {
-    background: rgba(209, 209, 4, 0.941);
+    color: rgba(209, 209, 4, 0.941);
+    text-shadow: 0 0 12px rgba(246, 171, 38, 0.42);
 }
 
 .tile.correct {
-    background: rgb(27, 213, 2);
+    color: rgb(27, 213, 2);
+    text-shadow: 0 0 12px rgba(38, 246, 110, 0.42);
 }
 
