@@ -50,6 +50,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     }).join('');
   },
 
+  get currentRow() {
+    return this.board[this.currentRowIndex];
+  },
+
+  get remainingGuesses() {
+    return this.guessesAllowed - this.currentRowIndex - 1;
+  },
+
   init: function init() {
     var _this = this;
 
@@ -96,37 +104,35 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
     if (guess.length < this.theWord.length) {
       return;
-    } //update tile colour
+    }
 
+    var _iterator2 = _createForOfIteratorHelper(this.currentRow),
+        _step2;
 
-    this.refreshTileStatusForCurrentRow();
+    try {
+      for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+        var tile = _step2.value;
+        tile.updateStatus(this.currentGuess, this.theWord);
+      }
+    } catch (err) {
+      _iterator2.e(err);
+    } finally {
+      _iterator2.f();
+    }
 
     if (guess === this.theWord) {
-      this.message = 'You Win!';
-    } else if (this.guessesAllowed === this.currentRowIndex + 1) {
-      this.message = 'GAME OVER!';
       this.state = 'complete';
-    } else {
-      this.message = 'that\'s not it!';
-      this.currentRowIndex++;
+      return this.message = 'You Win!';
     }
-  },
-  refreshTileStatusForCurrentRow: function refreshTileStatusForCurrentRow() {
-    var _this2 = this;
 
-    this.currentRow.forEach(function (tile, index) {
-      tile.status = _this2.theWord.includes(tile.letter) ? 'present' : 'absent';
+    if (remainingGuesses === 0) {
+      this.state = 'complete';
+      return this.message = 'GAME OVER!';
+    }
 
-      if (_this2.currentGuess[index] === _this2.theWord[index]) {
-        tile.status = 'correct';
-      }
-    });
-  },
-
-  get currentRow() {
-    return this.board[this.currentRowIndex];
+    this.currentRowIndex++;
+    return this.message = 'that\'s not it!';
   }
-
 });
 
 /***/ }),
@@ -159,6 +165,15 @@ var Tile = /*#__PURE__*/function () {
   }
 
   _createClass(Tile, [{
+    key: "updateStatus",
+    value: function updateStatus(currentGuess, theWord) {
+      this.status = theWord.includes(this.letter) ? 'present' : 'absent';
+
+      if (currentGuess.indexOf(this.letter) === theWord.indexOf(this.letter)) {
+        this.status = 'correct';
+      }
+    }
+  }, {
     key: "fill",
     value: function fill(key) {
       this.letter = key.toLowerCase();

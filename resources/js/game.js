@@ -11,6 +11,14 @@ export default {
             return this.currentRow.map(tile => tile.letter).join('');
         },
 
+        get currentRow() {
+            return this.board[this.currentRowIndex];
+        },
+
+        get remainingGuesses() {
+            return this.guessesAllowed - this.currentRowIndex - 1
+        },
+
         init() {
             this.board = Array.from({ length: this.guessesAllowed }, () => {
                 return Array.from({ length: this.theWord.length }, () => new Tile)
@@ -46,32 +54,25 @@ export default {
                 return;
             }
 
-            //update tile colour
-            this.refreshTileStatusForCurrentRow();
-
-            if (guess === this.theWord) {
-                this.message = 'You Win!';
-            } else if (this.guessesAllowed === this.currentRowIndex + 1) {
-                this.message = 'GAME OVER!';
-                this.state = 'complete';
-            } else {
-                this.message = 'that\'s not it!';
-                this.currentRowIndex++;
+            for (let tile of this.currentRow) {
+                tile.updateStatus(this.currentGuess, this.theWord);
             }
 
+            if (guess === this.theWord) {
+                this.state = 'complete';
+
+                return this.message = 'You Win!';
+            }
+
+            if (remainingGuesses === 0) {
+                this.state = 'complete';
+
+                return this.message = 'GAME OVER!';
+            }
+
+            this.currentRowIndex++;
+
+            return this.message = 'that\'s not it!';
+
         },
-
-        refreshTileStatusForCurrentRow() {
-            this.currentRow.forEach((tile, index) => {
-                tile.status = this.theWord.includes(tile.letter) ? 'present' : 'absent';
-
-                if (this.currentGuess[index] === this.theWord[index]) {
-                    tile.status = 'correct';
-                }
-            });
-        },
-
-        get currentRow() {
-            return this.board[this.currentRowIndex];
-        }
     };
