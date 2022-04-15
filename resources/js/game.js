@@ -30,17 +30,28 @@ export default {
 
             if (/^[A-z]$/.test(key)) {
                 this.fillTile(key);
+            } else if (key === 'Backspace') {
+                this.emptyTile();
             } else if (key === 'Enter') {
                 this.submitGuess()
             }
         },
 
         fillTile(key) {
-
             for (let tile of this.currentRow) {
                 if (!tile.letter) {
 
                     tile.fill(key);
+
+                    break;
+                }
+            }
+        },
+
+        emptyTile() {
+            for (let tile of [...this.currentRow].reverse()) {
+                if (tile.letter) {
+                    tile.empty();
 
                     break;
                 }
