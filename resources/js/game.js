@@ -1,9 +1,9 @@
 import Tile from "./tile";
-import words from './words';
+import {words, answers} from './words';
 
 export default {
         guessesAllowed: 3,
-        theWord: 'cat',
+        theWord: answers[Math.floor(Math.random() * answers.length)],
         currentRowIndex: 0,
         state: 'active',
         errors: false,
@@ -18,6 +18,7 @@ export default {
         get currentGuess() {
             return this.currentRow.map(tile => tile.letter).join('');
         },
+
 
         get currentRow() {
             return this.board[this.currentRowIndex];
