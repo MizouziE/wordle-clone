@@ -9,6 +9,12 @@ export default {
         errors: false,
         message: '',
 
+        letters: [
+            'QWERTYUIOP'.split(''),
+            'ASDFGHJKL'.split(''),
+            ['Backspace', ...'ZXCVBNM'.split(''), 'Enter'],
+        ],
+
         get currentGuess() {
             return this.currentRow.map(tile => tile.letter).join('');
         },
