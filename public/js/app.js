@@ -83,6 +83,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
     });
   },
+  matchingTileForKey: function matchingTileForKey(key) {
+    return this.board.flat().filter(function (tile) {
+      return tile.status;
+    }).sort(function (t1, t2) {
+      return t2.status === 'correct';
+    }).find(function (tile) {
+      return tile.letter === key.toLowerCase();
+    });
+  },
   onKeyPress: function onKeyPress(key) {
     this.message = '';
     this.errors = false;

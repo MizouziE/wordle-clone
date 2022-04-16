@@ -33,6 +33,14 @@ export default {
             });
         },
 
+        matchingTileForKey(key) {
+            return this.board
+                .flat()
+                .filter((tile) => tile.status)
+                .sort((t1, t2) => t2.status === 'correct')
+                .find((tile) => tile.letter === key.toLowerCase());
+        },
+
         onKeyPress(key) {
             this.message = '';
             this.errors = false;
