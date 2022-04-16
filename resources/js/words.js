@@ -45,10 +45,13 @@ export let answers = [
     "YOU",
     "POO",
     "BUM",
-    "LIP"
+    "LIP",
+    "PIG",
+    "SUN",
+    "BOY"
 ];
 
-export let allWords = [
+export let words = [
 "AAH",
 "AAL",
 "AAS",

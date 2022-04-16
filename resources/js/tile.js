@@ -7,7 +7,7 @@ export default class Tile {
     }
 
     static updateStatusesForRow(row, theWord) {
-        theWord = theWord.split('');
+        theWord = theWord.split("");
 
         for (let tile of row) {
             if (theWord[tile.position] === tile.letter) {
@@ -17,7 +17,7 @@ export default class Tile {
             }
         }
 
-        for (let tile of row) {
+        for (let tile of row.filter((tile) => !tile.status)) {
             if (theWord.includes(tile.letter)) {
                 tile.status = 'present';
 
@@ -25,7 +25,7 @@ export default class Tile {
             }
         }
 
-        for (let tile of row.flter(tile => !tile.status)) {
+        for (let tile of row.filter(tile => !tile.status)) {
                 tile.status = 'absent';
         }
     }
@@ -37,4 +37,4 @@ export default class Tile {
     empty() {
         this.letter = '';
     }
-};
+}
